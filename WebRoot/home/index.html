@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>云思订房系统</title>
+<link href="css/global.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		function fun_ajax(){
+			$.ajax({
+				url:url,
+				type:"post",
+				data:{
+					city_id:id
+				},
+				dataType:"json",
+				success:function(data){
+						hander(data);
+				}
+			});
+		}
+		$('#hot_menu_ul li').click(function(){
+			$('li[class=hot_menu_active]').removeClass('hot_menu_active');
+			$(this).addClass("hot_menu_active");
+			
+		});
+		function hot_menu_ul_city(data){
+			var obj =data.list;
+			var html="";
+			for(var i=0;i<obj.length;++i){
+				html+="<li id="+ obj.city_id+"><a>"+obj.city+"</a></li>";
+			}
+			$('li[class=hot_menu_active]').empty().append(html);
+		}
+	});
+</script>
+
+</head>
+
+<body>
+<div class="top">
+	<div class="top_index">
+		<div class="top_index_left">
+			<a>手机版</a> | 
+			<a>请登录</a> | 
+			<a>免费注册</a>
+			<span>云思订房系统</span>	
+		</div><!--top_index_left-->
+		<div class="top_index_right">
+			<a>中粮订房网微博</a>
+			<a>帮助中心</a>
+			<a>收藏本站</a>
+		</div><!--top_index_right-->
+	</div><!--top_index-->
+</div><!--top-->
+<div class="header">
+	<a class="logo"></a>
+</div><!--header-->
+
+<div class="menu">
+	<div class="menu_index">
+		<ul class="menu_index_left">
+			<li class="menu_active">
+				<a href="index.html">首页</a>
+			</li>
+			<li>
+				<a href="hotel_order.html">酒店预定</a>
+			</li>
+			<li>
+				<a>连锁酒店</a>
+			</li>
+			<li>
+				<a>惠选酒店</a>
+			</li>
+			<li>
+				<a>旅游指南</a>
+			</li>
+		</ul>
+		<div class="my_menu">
+			<a>意见反馈</a>
+			<a>我的收藏</a>
+			<a>我的账户</a>
+			<a>我的订单</a>
+		</div>
+		<div class="clr"></div>
+	</div><!--menu_index-->
+</div><!--menu-->
+
+<div class="home_content">
+	<div class="home_search">
+		<h1>酒店预订</h1>
+		<div class="home_search_list">
+			<ul>
+				<li>
+					<label>入住城市:</label>
+					<input type="text" value="西安"/>
+				</li>
+				<li>
+					<label>入住日期:</label>
+					<input type="text" value="2014-10-20"/>
+				</li>
+				<li>
+					<label>退房日期:</label>
+					<input type="text" value="2014-11-10"/>
+				</li>
+				<li>
+					<label>关键词:</label>
+					<input type="text" value="输入酒店名、品牌或地址"/>
+				</li>		
+			</ul>
+			<div class="home_search_btn">
+				<a>搜索</a>
+			</div>
+		</div><!--home_search_list-->
+	</div><!--home_search-->
+	<div class="home_right">
+		<div class="home_advertis">
+			<div class="home_silder">
+				<div class="silder_picture">
+					<a style="position: absolute; opacity: 100;" href="#"><img src="./image/inn428.jpg" alt=""></a>
+					<a style="position: relative; opacity: 100; display: none;" href="#"><img src="./image/spa428.jpg" alt=""></a>
+					<a style="position: relative; opacity: 100; display: none;" href="#"><img src="./image/loves428.jpg" alt=""></a>
+				</div>
+				<ul class="pic_numlist">
+					<li class="">1</li>
+					<li class="">2</li>
+					<li class="pic_current">3</li>
+				</ul>
+			</div><!--home_silder-->
+			<div class="advertis_inall">
+				<div class="advertis_one">
+					<h2>服务承诺</h2>
+					<p>网站价格如高出酒店前台挂牌价，3倍差价赔付，如确认后到店无房，赔付您首晚房费！</p>
+				</div>
+				<div class="advertis_two">
+					<a>关注 @云思订房系统</a>
+					<p>微博也能订酒店，快来体验！</p>
+				</div>
+			</div><!--advertis_inall-->
+			<div class="clr"></div>
+		</div><!--home_advertis-->
+		
+		<div class="hot_all">
+			<div class="hot_menu">
+				<span>热门城市</span>
+				<ul class="hot_menu_ul" id="hot_menu_ul">
+					<li class="hot_menu_active">
+						<a>青岛</a>
+					</li>
+					<li>
+						<a>深圳</a>
+					</li>
+					<li>
+						<a>西安</a>
+					</li>
+					<li>
+						<a>南京</a>
+					</li>
+					<li>
+						<a>青岛</a>
+					</li>
+					<li>
+						<a>深圳</a>
+					</li>
+					<li>
+						<a>西安</a>
+					</li>
+					<li>
+						<a>南京</a>
+					</li>
+					<li>
+						<a>青岛</a>
+					</li>
+				</ul>
+				<div class="clr"></div>
+			</div><!--hot_menu-->
+			<div class="hot_list" id="hot_list">
+				<ul>
+					<li>
+						<a>青岛京燕饭店（石景山）</a>
+						<span>￥180</span>
+					</li>
+					<li>
+						<a>青岛东航之星宾馆</a>
+						<span>￥180</span>
+					</li>
+					<li>
+						<a>青岛星宾馆</a>
+						<span>￥180</span>
+					</li>
+					<li>
+						<a>南京东航之星宾馆</a>
+						<span>￥180</span>
+					</li>
+					<li>
+						<a>青岛京燕饭店（石景山）</a>
+						<span>￥180</span>
+					</li>
+					<li>
+						<a>南京东航之星宾馆</a>
+						<span>￥180</span>
+					</li>
+					<li>
+						<a>青岛东航之星宾馆</a>
+						<span>￥180</span>
+					</li>
+					<li>
+						<a>青岛星宾馆</a>
+						<span>￥180</span>
+					</li>
+					<li>
+						<a>南京东航之星宾馆</a>
+						<span>￥180</span>
+					</li>
+					<li>
+						<a>青岛东航之星宾馆</a>
+						<span>￥180</span>
+					</li>
+					<li>
+						<a>青岛星宾馆</a>
+						<span>￥180</span>
+					</li>
+					<li>
+						<a>南京东航之星宾馆</a>
+						<span>￥180</span>
+					</li>
+					<li>
+						<a>南京东航之星宾馆</a>
+						<span>￥180</span>
+					</li>
+					<li>
+						<a>青岛东航之星宾馆</a>
+						<span>￥180</span>
+					</li>
+					<li>
+						<a>青岛星宾馆</a>
+						<span>￥180</span>
+					</li> 
+					<div class="clr"></div>
+				</ul>
+			</div><!--hot_list-->
+		</div><!--hot_all-->
+	</div><!--home_right-->
+	<div class="clr"></div>
+</div><!--home_content-->
+
+<div class="foot">
+	<div class="foot_index">
+		<div class="foot_mune">
+			<a>免费注册</a> | 
+			<a>关于我们</a> | 
+			<a>宾馆索引</a> | 
+			<a>酒店导航</a> | 
+			<a>广告业务</a> | 
+			<a>诚聘英才</a> | 
+			<a>友情链接</a> | 
+			<a>网站导航</a> | 
+			<a>网站律师</a> | 
+		</div><!--foot_mune-->
+		<p>Copyright © 2003-2013, all rights reserved.</p>
+	</div><!--foot_index-->
+</div><!--foot-->
+</body>
+</html>

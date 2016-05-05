@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link rel="stylesheet" href="css/global_style.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+	$(".login_center").on("focus","input",function(){
+		if($(this).prev().get(0).tagName =="SPAN")
+		$(this).prev().hide();
+	});
+	$(".login_center").on("focusout","input",function(){
+		if($(this).val() =="" &&$(this).prev().get(0).tagName =="SPAN")
+			$(this).prev().show();
+	});
+	$(".write_word").click(function(){
+		$(this).next().focus();
+	});
+	$("#s_bt").click(function(){
+		if(!$("#username").val()){
+		$(".login_error").html("请输入用户名");
+		return ;
+		}
+		if(!$("#password").val()){
+		$(".login_error").html("用户名不能为空");
+		return ;
+		}
+		$.ajax({
+			"url":"hotel_login.action",
+			"type":"post",
+			dataType:"json",
+			"data":{
+				"user.username":$("#username").val(),
+				"user.password":$("#password").val(),
+				"user.safecode":$("#kaptcha").val()
+			},
+			"success":function(data){
+			
+				if(data["id"]=="EC01"){
+				window.location.href="home.html?username="+$("#username").val();
+			}else{
+				alert(data["error_data"]);
+			}
+		}});
+	});
+	$("#yzm").click(function () {  //刷新
+	    $('#kaptchaImage').hide().attr('src', '<%=request.getContextPath() %>/kaptcha.jpg?' + Math.floor(Math.random()*100) ).fadeIn();  
+	    event.cancelBubble=true;  
+	}); 
+});
+	
+</script>
+</head>
+
+<body style="background-color:#16aabd; ">
+	<div class="login_all">
+	  	<div class="login_all_content">
+			<div class="login_head">
+				<h1>云思订房系统后台管理系统</h1>
+			</div>
+			<div class="login_center">
+				<div class="login_center_content">
+					<div class="login_name">
+						<label>用户名：</label>
+						<div class="password_text">
+							<span class="write_word">请输入用户名</span>
+							<input id="username"type="text"/>
+						</div>
+						<div class="clr"></div>
+					</div>
+					<div class="login_error">用户名不能为空</div>
+					<div class="password_name">
+						<label>密码：</label>
+						<div class="password_text">
+							<span class="write_word">请输入密码</span>
+							<input id="password"type="password"/>
+						</div>
+						<div class="clr"></div>
+					</div>
+					<div class="password_name verification_name">
+						<label>验证码：</label>
+						<div class="password_text">
+							<span class="write_word">请输入验证码</span>
+				
+							   <input name="safecode" type="text" id="kaptcha" maxlength="4" class="form-control" />
+						</div>
+						<div class="ver_img">
+							<img src="<%=request.getContextPath() %>/kaptcha.jpg"  id="kaptchaImage"  width="100" height="60" />
+							
+							<a href="javascript:void()" id="yzm">看不清，<br>换一张</a> 
+						</div>
+						<div class="clr"></div>
+					</div>
+					<input type="submit" class="login_button" value="&nbsp;" id="s_bt"/>
+				</div>	
+			</div><!--login_center-->
+			<div class="login_bottom"></div>		
+		</div><!--login_all_content-->
+	</div><!--login_all-->
+</body>
+</html>

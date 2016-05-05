@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-form.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#upload").change(function(){
+			$("#f_t").ajaxSubmit({
+				url:"test.action",
+				dataType:"text",
+				success:function(data){
+					var name = "image/"+data;
+					$("#t_img").attr("src","image/"+data);
+					
+				}
+			});
+		});
+		
+	});
+</script>
+</head>
+<body>
+	<form action="test.action" method="post" target="if" enctype="multipart/form-data" id="f_t">
+		<input type="file" id="upload" name="upload"/>
+		<input type="submit" value="send it"/>
+	</form>
+		<img alt="noe" id="t_img" src=""/><br/>
+	<iframe id="if">
+	
+	</iframe>
+</body>
+</html>

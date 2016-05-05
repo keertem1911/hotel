@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="mm" extends="struts-default" namespace="/">
+	<!--  	<interceptors>
+			<interceptor name="login_interceptor" class="hotel.interceptor.Login_Interceptor">
+				<param name="excludeMethods">login</param>
+			</interceptor>
+			<interceptor-stack name="my_login">
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="login_interceptor"/>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="my_login"></default-interceptor-ref>
+		-->
+		<action name="test" class="Test.testaction" method="test">
+		</action>
+	 	<action name="hotel_*" class="hotel.action.Hotel_all_Action" method="{1}">
+		</action>
+		<action name="upload" class="hotel.action.UploadAction" method="upload">
+		</action>
+		<action name="Down_user_list" class="hotel.action.Down_user_list" method="dExel"></action>
+		
+	</package>
+</struts>

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link rel="stylesheet" href="css/global_style.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		function fun_ajax(url,data,type,hander){
+			$.ajax({
+				url:url,
+				type:"post",
+				data:data,
+				dataType:type,
+				success:function(data){
+					hander(data);
+				}
+			});		
+		}
+		function fun_success(data){
+			
+			if(data["id"]="EC01"){
+				alert(data["success_data"]);
+				window.location.href="user_list.html";
+			}else{
+				alert(data["error_data"]);
+			}
+		}
+		$(".regist_btn input").click(function(){
+			var html={};
+			$.each($("input"),function(){
+				if($(this).attr("type")=="text"){
+					html["customer."+this.id] = $(this).val();
+				}
+			});
+			html["operate.operate"]="insert";
+			fun_ajax("hotel_OperateCustomer.action",html,"json",fun_success);
+		});
+	});
+</script>
+</head>
+	
+<body>
+	
+	<div id="main_right_create_hotel"> 
+		<div class="main_right_top">用户管理  <span>创建用户</span></div>
+		<div class="main_right_body"> 
+			<div class="creat_user">
+				<ul>
+					<li>
+						<label>姓名：</label>
+						<input type="text"  id="username"/>				
+					</li>
+					<li>
+						<label>Email：</label>
+						<input type="text" id="email"/>				
+					</li>
+					<li>
+						<label>手机号：</label>
+						<input type="text" id="phone" value="请输入手机号"/>	
+					</li>
+					<div class="base_error"><i>手机号错误</i></div>
+				</ul>		
+				<div class="regist_btn">
+					<input type="submit" value="提交" />
+					<a class="return_btn" href="user_list.html">返回</a>
+				</div>		
+			</div><!--creat_user-->
+		</div> <!--main_right_body-->
+	</div><!--main_right结束-->
+	
+</body>
+</html>

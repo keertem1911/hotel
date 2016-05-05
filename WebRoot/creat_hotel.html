@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link rel="stylesheet" href="css/global_style.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-form.js"></script>
+<script type="text/javascript">
+	$(function(){
+		function function_ajax(data1,url,hander,type){
+		$.ajax({
+			url:url,
+			type:"post",
+			data:data1,
+			dataType:type,
+			success:function(data){
+				if(data.check=="ER01"){
+					no_login();
+				}else{
+				hander(data);}
+			}
+		});
+		}
+		function no_login(){
+			alert("请登录后再访问");
+			window.parent.location.href="login.html";
+		}
+		function select_success(data){
+			
+			var s ="<option>--please select----</option>";
+			for(var i=0;i<data.length;++i){
+				s +="<option value="+data[i]["id"]+">"+data[i].name+"</option>";
+			}
+			if(data[0].pid ==0){
+			pro_success(s);
+			}
+			else{
+				city_success(s);
+				}
+			
+		}
+		function pro_success(s){
+			
+			$("#p_id").append(s).change(function(){
+				function_ajax({
+					id:this.value,
+				},"hotel_SelectprocityInfor.action",select_success,"json");
+			});
+		}
+		function city_success(s){
+			$("#c_id").html("");
+			$("#c_id").append(s);
+		}
+		function_ajax({
+			id:"0",
+		},"hotel_SelectprocityInfor.action",select_success,"json");
+		$(".regist_btn input").click(function(){
+			var html={};
+			$.each($("input,textarea,select"),function(index){
+				if($(this).attr("type")=="text"||this.nodeName=="TEXTAREA"||this.nodeName=="SELECT")
+				{
+					var key = this.id;
+					var value= $(this).val();
+					html["hotel."+key]=value;
+				}
+			});
+			for(var attr in html){
+				if(html[attr]==""){
+					alert("输入不能为空"); break;
+				}else{
+					function_ajax(html, "hotel_CreateHotel.action", create_hotel_success, "");
+					break;
+				}
+			}
+		});
+		function create_hotel_success(data){
+			
+			if(data =="EC01"){
+				alert("添加成功");
+			}else{
+				alert(data);
+			}
+			
+			
+		}
+		$(".jquploader").change(function(){
+			$("#upload_form").ajaxSubmit({
+				url:"upload.action",
+				dataType:"",
+				success:function(data){
+					if(data!=""){
+						$("#image_upload").attr("src","images/"+data);
+					}else{
+						alert("上传失败");
+					}
+				}
+			})
+			
+		});
+	
+	});
+</script>
+</head>
+
+<body>
+	<div id="main_right_create_hotel"> 
+		<div  id="main_right" class="main_right_top">订单管理  <span>全部订单</span></div>
+		<div class="main_right_body"> 
+			<div class="creat_user">
+				<div class=" hotle_creat_title">
+					<h1>酒店基础信息</h1>				
+				</div>
+				<ul>
+					<li>
+						<label>酒店名称：</label>
+						<input id="h_name" type="text" />				
+					</li>
+					<li class="hotle_area_li">
+						<label>&nbsp;</label>
+						<div class="hotle_area_tab">
+							<a class="hotle_area_active">连锁酒店</a>
+							<a>高档酒店</a>
+						</div>		
+					</li>
+					<li>
+						<label>省份-城市：</label>
+						<select id="p_id" class="city_name">
+						</select>
+						<select id="c_id" class="city_name">
+						</select>		
+					</li>
+					<li>
+						<label>街道：</label>
+						<input id="street" type="text" />				
+					</li>
+					<li>
+						<label>上传图片：</label>
+						<div class="online_img">
+							<div class="book_img">
+								<img  id="image_upload" src="images/one.jpg"/>
+								<a class="book_img_delete"></a>
+							</div>
+							<div class="gall_file_fold">
+								  <input type="button" id="" value="点击上传图片" class="galleries_chose"/>
+								 <form action="upload.action" method="post" id="upload_form" enctype="multipart/form-data" target="i_frame">
+								  <input id="upload" name="upload" type="file" class="jquploader"/>
+								  </form>
+							
+							 </div>
+						</div>	
+					</li>	
+				</ul>		
+				
+			</div><!--creat_user-->
+			<div class="creat_user">
+				<div class=" hotle_creat_title">
+					<h1>酒店介绍</h1>				
+				</div>
+				<ul>
+					<li>
+						<label>酒店介绍：</label>
+						<textarea id="introduction"></textarea>			
+					</li>	
+				</ul>		
+			</div><!--creat_user-->
+			
+			<div class="creat_user">
+				<div class=" hotle_creat_title">
+					<h1>酒店设施</h1>				
+				</div>
+				<ul>
+					<li>
+						<label>网络设施：</label>
+						<input id="internet" type="text" />				
+					</li>
+					<li>
+						<label>停车场：</label>
+						<input id="park"type="text" />				
+					</li>
+					<li>
+						<label>酒店设施：</label>
+						<textarea id="equipment" class="textarea_min"></textarea>		
+					</li>
+				</ul>		
+			</div><!--creat_user-->
+			
+			<div class="creat_user">
+				<div class=" hotle_creat_title">
+					<h1>酒店政策</h1>				
+				</div>
+				<ul>
+					<li>
+						<label>入住和离店：</label>
+						<input  id="in_out" type="text" />				
+					</li>
+					<li>
+						<label>取消政策：</label>
+						<input id="cancel_policy" type="text"/>				
+					</li>
+					<li>
+						<label>押金/预付款：</label>
+						<textarea id="cash" class="textarea_min"></textarea>		
+					</li>
+					<li>
+						<label>宠物：</label>
+						<input id="pet" type="text"/>				
+					</li>
+					<li>
+						<label>特殊条款：</label>
+						<input id="special_items" type="text" />				
+					</li>
+					<li>
+						<label>接受信用卡：</label>
+						<div class="online_img">
+							<div class="book_img">
+								<img src="images/one.jpg"/>
+								<a class="book_img_delete"></a>
+							</div>
+							<div class="gall_file_fold">
+								  <input type="button" id="" value="点击上传图片" class="galleries_chose"/>
+								  <input type="file" class="jquploader"/>
+							 </div>
+						</div>	
+						<div class="online_img">
+							<div class="book_img">
+								<img src="images/one.jpg"/>
+								<a class="book_img_delete"></a>
+							</div>
+							<div class="gall_file_fold">
+								  <input type="button" id="" value="点击上传图片" class="galleries_chose"/>
+								  <input type="file" class="jquploader"/>
+							 </div>
+						</div>			
+					</li>
+				</ul>		
+			</div><!--creat_user-->
+			
+			
+			<div class="creat_user">
+				<div class=" hotle_creat_title">
+					<h1>周边设施</h1>				
+				</div>
+				<ul>
+					<li>
+						<label>餐饮：</label>
+						<input id="catering" type="text" />
+					</li>
+					<li>
+						<label>购物：</label>
+						<input id="shopping"type="text" />
+					</li>
+					<li>
+						<label>娱乐：</label>
+						<input id="entertainment" type="text"/>
+					</li>
+					<li>
+						<label>地铁站：</label>
+						<input id="subway_station" type="text" />
+					</li>
+					<li>
+						<label>景点：</label>
+						<input id="view_spot" type="text"/>
+					</li>
+				</ul>	
+			</div><!--creat_user-->
+			<div class="regist_btn">
+				<input type="submit" value="提交" />
+				<a class="return_btn" href="hotel_list.html">返回</a>
+			</div>		
+		</div> <!--main_right_body-->
+		<iframe id="i_frame"></iframe>
+	</div><!--main_right结束-->
+</body>
+</html>

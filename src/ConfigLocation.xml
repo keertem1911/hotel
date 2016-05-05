@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+ <configuration>
+ 	<typeAliases>
+ 		<typeAlias type="hotel.vo.Pcityvo" alias="provo"/>
+ 		<typeAlias type="hotel.vo.Customer" alias="customer"/>
+ 		<typeAlias type="hotel.vo.Hotel" alias="hotel"/>
+ 	</typeAliases>
+ 	<environments default="dafult">
+ 		<environment id="d1">
+ 		<transactionManager type="JDBC">
+ 			<property name="closeConnection" value="false"/>
+ 		</transactionManager>
+ 			<dataSource type="POOLED" >
+ 				<property name="driver" value="com.mysql.jdbc.Driver"/>
+ 				<property name="url" value="jdbc:mysql://localhost:3306/hotel"/>
+ 				<property name="username" value="root"/>
+ 				<property name="password" value="123456"/>
+ 			</dataSource>
+ 		</environment>
+ 	</environments>
+ 	
+ 	<mappers>
+ 		<mapper resource="ssm_t.xml"/>
+ 	</mappers>
+ </configuration>   
+    
+    

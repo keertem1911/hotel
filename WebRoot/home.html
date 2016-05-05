@@ -1,0 +1,205 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="css/global_style.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+		$.each($(".navmenu"),function(){
+			var thiz = $(this);
+			thiz.prev().click(function(){
+				if(thiz.attr("style")!=null)
+				{
+					var thia = thiz.attr("style");
+					thia = thia.substring(0,thia.length-1);
+					var key1 = thia.split(":");
+					if(key1[1] ){
+						thiz.show();
+					}else{
+						thiz.hide();
+					}
+				}
+				else{
+					thiz.hide();
+				}
+			})
+		});
+		$(".navmenu li").click(function(){
+			$("#frame").attr("src",$(this).attr("url"));	
+			$("#frame").change(function(){
+				alert("a");
+			});
+		});
+		var username = window.location.href;
+		username = username.substring(username.lastIndexOf("=")+1, username.length);
+		$(".headerright span").html(username);
+		var timer = {};
+		
+		function move(obj,target,position){
+			clearInterval(timer[position]);
+			 timer[position] = setInterval(function(){
+				var a = position.substring(0,1).toUpperCase()+position.substring(1);
+				var t = obj["offset"+a];
+				var speed  = (t-target)/8;
+				speed = speed > 0 ? Math.ceil(speed):Math.floor(speed);
+				if(speed == 0){
+					clearInterval(timer[position]);
+				}
+				obj.style[position] = t+speed+"px";
+			},100);
+			}
+	
+		$("#main_middle").click(function(){
+			var target = this.offsetLeft;
+			var left = document.getElementById("main_left");
+		});
+		$(".headerright").on("click","img",function(){
+			
+			var thiz = $(".headerright a").first();
+		
+			if($(this).parent().attr("class") == thiz.attr("class")){
+				window.location.href=$(this).parent().attr("class")+".html";
+			}else{
+				window.location.href="login.html";
+			}
+		})
+	});
+</script>
+</head>
+<body>
+	<!--head-->
+	<div id="head" class="main_top"> 
+		 <div class="logopanel">
+		 	<a>云思订房系统后台管理系统</a>
+         </div><!--logopanel-->
+		 <div class="headerpanel">
+			 <div class="headerright">
+			 	<p><span>用户名！</span>云思订房系统欢迎您！</p>
+				<a class="edit_password" href="javascript:void(0)"><img src="images/top_icon1.png" width="88" height="30" /></a>
+				<a class="exit_system" href="javascript:void(0)"><img src="images/top_icon2.png" width="88" height="30" /></a> 
+				<div class="clr"></div>	
+			 </div> 
+			 <div class="clr"></div>
+		  </div><!--headerpanel-->
+		 <div class="clr"></div>	
+	</div>
+	<!--head结束-->
+	<div>
+	<!--main_left开始-->
+	<div id="main_left">
+		<div class="main_left_border">
+			<!--一级目录-->
+			<ul class="mainmenu">
+				<li url="user_list.html"> 
+					<a href="javascript:void(0)">
+						<img src="images/next_icon.png" width="10" height="5"/>
+						<span class="home_icon">超级管理员</span>
+						<div class="clr"></div>	
+					</a>
+					<!--二级目录-->
+					<ul class="navmenu">
+						<li url="admin_manage.html">
+							<a href="javascript:void(0)"><span class="none_nav" >管理员管理</span></a>
+						</li>
+					</ul>
+					<!--二级目录结束-->
+				</li>
+			</ul>			
+			<!--一级目录-->
+			<ul class="thirdmenu">
+				<li>
+					<a href="#"><span>系统管理员</span></a>
+				</li>
+				<li><a href="#"><span>系统操作员</span></a></li>
+			</ul>		
+			<!--一级目录-->
+			<ul class="mainmenu">
+				<li > 
+					<a href="javascript:void(0)">
+						<img src="images/next_icon.png" width="10" height="5"/>
+						<span class="home_icon">用户管理</span>
+						<div class="clr"></div>	
+					</a>
+					<!--二级目录-->
+					<ul class="navmenu">
+						<li url="user_list.html">
+							<a href="javascript:void(0)"><span class="none_nav" >用户列表</span></a>
+						</li>
+					</ul>
+					<!--二级目录结束-->						
+				</li>
+			</ul>			
+			<!--一级目录-->
+			<ul class="mainmenu">
+				<li > 
+					<a href="javascript:void(0)">
+						<img src="images/next_icon.png" width="10" height="5"/>
+						<span class="order_icon">订单管理</span>
+						<div class="clr"></div>	
+					</a>
+					<!--二级目录-->
+					<ul class="navmenu">
+						<li url="order_list.html">
+							<a href="javascript:void(0)"><span class="none_nav" >全部订单</span></a>
+						</li>
+						<li>
+							<a href="#"><span class="none_nav" >历史订单</span></a>
+						</li>
+					</ul>
+					<!--二级目录结束-->					
+				</li>
+			</ul><!--mainmenu-->
+			<!--一级目录-->
+			<ul class="mainmenu">
+				<li > 
+					<a href="javascript:void(0)">
+						<img src="images/next_icon.png" width="10" height="5"/>
+						<span class="sat_icon">报表管理</span>
+						<div class="clr"></div>	
+					</a>				
+				</li>
+				<ul class="navmenu">
+					<li class="navmenu_actvie">
+						<a href="sta_manage.html"><span class="none_nav" >报表统计</span></a>
+					</li>
+				</ul>
+			</ul>			
+			<!--一级目录-->
+			<!--一级目录-->
+			<ul class="mainmenu">
+				<li > 
+					<a href="javascript:void(0)">
+						<img src="images/next_icon.png" width="10" height="5"/>
+						<span class="hotel_icon">酒店管理</span>
+						<div class="clr"></div>	
+					</a>				
+				</li>
+				<!--二级目录-->
+					<ul class="navmenu">
+						<li url="hotel_list.html">
+							<a href="javascript:void(0)"><span class="none_nav" >酒店列表</span></a>
+						</li>
+					</ul>
+					<!--二级目录结束-->	
+			</ul>			
+			<!--一级目录-->
+		</div>
+	</div>
+	<!--main_left结束-->
+	
+	<!--main_middle开始-->
+	<div id="main_middle">
+		<img id="left_on"  src="images/middle_btn1.png" width="8" height="60" />
+		<img id="left_off" src="images/middle_btn2.png" width="8" height="60" style="display:none" />
+	</div>
+	<!--main_middle结束-->
+		</div>
+	<!--main_right-->
+	
+	<div id="main_right"> 
+		<iframe id="frame" src="user_detail.html" frameborder="0" width="100%"  height="100%" scrolling="no" ></iframe> 
+	</div><!--main_right结束-->
+	
+</body>
+</html>

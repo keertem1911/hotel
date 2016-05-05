@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link rel="stylesheet" href="css/global_style.css" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/pagination.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var current_page = 1;
+		function fun_ajax(url,param,type,hander){
+			$.ajax({
+				url:url,
+				type:"post",
+				data:param,
+				dataType:type,
+				success:function(data){
+					if(data["id"]=="EC01"||data["check"]=="EC01"){ 
+						hander(data);
+					}else{
+						alert(data["error_data"]);
+					}
+					
+				}
+			});
+		}
+		$(".search_btn").click(function(){
+			var html = {};
+			$.each($(".search_all input"),function(){
+				if($(this).attr("type")=="text"){
+					html["customer."+this.id]=$(this).val();
+				}
+			});
+			html["operate."+operate]="check";
+			fun_ajax("hotel_OperateCustomer.action",html,"json",fun_success);
+		});
+		$("tbody").on("click","a",function(){
+			var target_id = $(this).parent().parent().find("input").attr("id");
+			var hander_name = this.id;
+			var href = window.location.href;
+			if(hander_name.match(".action")){
+				fun_ajax(hander_name,{"operate.id":target_id,"operate.operate":"delete"}, "json",fun_success);
+			}else{
+		 	window.location.href=this.id+"?"+"id="+target_id;
+			}
+			});
+		function fun_success(data){
+			init();
+		} 
+		var init=$(".page").pagination({
+			url :"hotel_Inti_User_List.action",
+			page_number:1,
+			page_size:4,
+			size:5,
+			hander:function(data){
+				CallBack(data);}
+			});
+			var click_radio ={};
+			function CallBack(data){
+				var  obj = data.list;
+				var html="";
+				for(var i=0;i<obj.length;++i){
+					var id=obj[i]["id"];
+				 	html+="<tr><input type='hidden' id="+id +">"+
+					"<td><input type='radio'/></td><td>"+obj[i]["username"]+
+					"</td><td>"+obj[i]["email"]+"</td><td>"+obj[i]["phone"]+
+					"</td><td><a href='javascript:void(0)' id='user_detail.html' class='td_link'>查看详情</a>"+
+						"<a href='javascript:void(0)' id='edit_user.html' class='td_link'>修改</a>"+
+						"<a href='javascript:void(0)' id='hotel_OperateCustomer.action' class='td_link'>删除</a></td></tr>";			
+				}$("tbody").empty().append(html);
+			
+				$("input:radio").click(function(){
+					var parent = $(this).parent().prev();
+					var id = $(parent).attr("id");
+					if(click_radio[id] ==undefined){
+					click_radio[id]=0;
+					}else{
+						if(click_radio[id]%2){
+							this.checked = false;
+						}else{
+							this.checked = true;
+						}
+						click_radio[id]+=1;
+					}
+					
+					 
+				})
+			} 
+		
+			$("#batch_delete").click(function(){
+				var a="";
+				$.each($("tbody input:checked"),function(){
+				 a+=$(this).parent().prev().attr("id")+",";
+				 }
+				);
+				a  =a.substring(0,a.length-1);
+				fun_ajax("hotel_batch_delete_user.action",{"ids":a},"json",function(data){
+					$(".page").pagination({
+						url :"hotel_Inti_User_List.action",
+						page_number:1,
+						page_size:4,
+						size:5,
+						hander:function(data){
+							CallBack(data);}
+						});	
+				});
+			});
+			$("input[id='select_all_user']").click(function(){
+				console.log($(this).val());
+			});
+	});
+</script>
+</head>
+<body>
+		<div class="main_right_top">用户管理  <span>用户列表</span></div>
+		<div class="main_right_body"> 
+			<div class="user_manage">
+				<div class="search_all">
+					<div class="search_one">
+						<label>姓名：</label>
+						<input id="username" type="text" />
+					</div>
+					<div class="search_one">
+						<label>邮箱：</label>
+						<input type="text" id="email"/>
+					</div>
+					<div class="search_one">
+						<label>手机：</label>
+						<input type="text" id="phone" />
+					</div>
+					<a class="search_btn">查询</a>
+				</div><!--search_all-->
+				<div class="set_all">
+					<div class="set_btn">
+						<a href="creat_user.html" class="set_btn_link">创建用户</a>
+					</div><!--set_btn-->
+					<div class="sta_number">
+						<p>系统中共有<span>##</span>个用户</p>
+					</div><!--sta_number-->
+				</div>
+				 <table border="0" cellspacing="0" cellpadding="0">
+					<thead>
+						<tr>
+							<th>
+								<input type="radio" id="select_all_user" />
+							</th>
+							<th>姓名</th>
+							<th>邮箱</th>
+							<th>手机</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>	
+					</tbody>
+				</table>
+				<div class="page_all">
+					<div class="pl_option">
+						<a href="javascript:void(0)" id="batch_delete">批量删除</a>
+						<a href="Down_user_list.action">导出用户</a>
+					</div>
+					<div class="page">
+					</div>
+					<div class="clr"></div>
+				</div><!--page_all-->	
+			</div><!--user_manage-->
+		</div> <!--main_right_body-->
+</body>
+</html>
